@@ -14,6 +14,8 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import model.Project;
 import model.Task;
+import util.ButtonColumnCellRenderer;
+import util.DeadlineColumnCellRender;
 import util.TaskTableModel;
 
 /**
@@ -30,9 +32,9 @@ public class MainScreen extends javax.swing.JFrame {
     
     public MainScreen() {
         initComponents();
-        decorateTableTask();
         initDataController();
         initComponentsModel();
+        decorateTableTask();
     }
 
     /**
@@ -358,15 +360,24 @@ public class MainScreen extends javax.swing.JFrame {
           // TODO add your handling code here:
           int rowIndex = jTableTasks.rowAtPoint(evt.getPoint());
           int columnIndex = jTableTasks.columnAtPoint(evt.getPoint());
+          Task task = tasksModel.getTasks().get(rowIndex);
           
           switch(columnIndex){
               case 3:
-                  Task task = tasksModel.getTasks().get(rowIndex);
+                 
                   taskController.update(task);
                   break;
               case 4:
                   break;
-              case 6:
+              case 5:
+                  
+                  taskController.removeById(task.getId());
+                  tasksModel.getTasks().remove(task);
+                  
+                  int projectIndex = jListProjects.getSelectedIndex();
+                  Project project = (Project) projectsModel.get(projectIndex);
+                  loadTasks(project.getId());
+                  
                   break;    
           }
           
@@ -441,8 +452,13 @@ public class MainScreen extends javax.swing.JFrame {
         jTableTasks.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         jTableTasks.getTableHeader().setBackground(new Color(0,153,102));
         jTableTasks.getTableHeader().setForeground(new Color(255,255,255));
+        
+        jTableTasks.getColumnModel().getColumn(2).setCellRenderer(new DeadlineColumnCellRender());
+        
+        jTableTasks.getColumnModel().getColumn(4).setCellRenderer(new ButtonColumnCellRenderer("edit"));
+        jTableTasks.getColumnModel().getColumn(5).setCellRenderer(new ButtonColumnCellRenderer("delete"));
         //Criando um sort automatico para as colunas da table
-        jTableTasks.setAutoCreateRowSorter(true);
+        //jTableTasks.setAutoCreateRowSorter(true);
     }
     
     public void initDataController(){

@@ -192,27 +192,34 @@ public class TaskDialogScreen extends javax.swing.JDialog {
     private void jLabelToolBarSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelToolBarSaveMouseClicked
         // TODO add your handling code here:
         try {
-            Task task = new Task();
+            if(!jTextName.getText().isEmpty() && !jFormattedTextFieldDeadline.getText().isEmpty()){
+                
+                Task task = new Task();
             
-            task.setIdProject(project.getId());
-            
-            task.setName(jTextName.getText());
-            task.setDescription(jTextAreaDescription.getText());
-            task.setNotes(jTextAreaNotes.getText());
-            task.setIsCompleted(false);
-            
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            Date deadline = null;
-            deadline = dateFormat.parse(jFormattedTextFieldDeadline.getText());
-            task.setDeadline(deadline);
-            taskController.save(task);
-            
-            JOptionPane.showMessageDialog(rootPane, "Tarefa salva com sucesso!" );
-            
+                task.setIdProject(project.getId());
+
+                task.setName(jTextName.getText());
+                task.setDescription(jTextAreaDescription.getText());
+                task.setNotes(jTextAreaNotes.getText());
+                task.setIsCompleted(false);
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                Date deadline = null;
+                deadline = dateFormat.parse(jFormattedTextFieldDeadline.getText());
+                task.setDeadline(deadline);
+                taskController.save(task);
+
+                JOptionPane.showMessageDialog(rootPane, "Tarefa salva com sucesso!" );
+                this.dispose();
+                
+            } else {
+               JOptionPane.showMessageDialog(rootPane,"Tarefa não salva, campos obrigatorios vazios");
+            }
+
         } catch (Exception ex){
             JOptionPane.showMessageDialog(rootPane, ex.getMessage());
         }
-        this.dispose();
+        
     }//GEN-LAST:event_jLabelToolBarSaveMouseClicked
 
     /**
