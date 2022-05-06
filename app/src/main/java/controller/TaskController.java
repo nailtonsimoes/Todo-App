@@ -59,16 +59,7 @@ public class TaskController {
     }
     
     public void update(Task task){
-        String sql = "UPDATE tasks SET "
-                + "idProject = ?, "
-                + "name = ?,"
-                + "description = ?,"
-                + "notes = ?,"
-                + "completed = ?,"
-                + "deadline = ?,"
-                + "createdAt = ?,"
-                + "updatedAt = ?,"
-                + " WHERE id = ?";
+        String sql = "UPDATE tasks SET idProject = ?, name = ?, description = ?, completed = ?, notes = ?, deadline = ?, createdAt = ?, updatedAt = ? WHERE id = ?";
         
         Connection connection = null;
         PreparedStatement statement = null;
@@ -150,7 +141,7 @@ public class TaskController {
                 task.setIsCompleted(resultSet.getBoolean("completed"));
                 task.setDeadline(resultSet.getDate("deadline"));
                 task.setCreatedAt(resultSet.getDate("createdAt"));
-                task.setUpdatedAt(resultSet.getDate("updateAt"));
+                task.setUpdatedAt(resultSet.getDate("updatedAt"));
                 
                 tasks.add(task);
             }
